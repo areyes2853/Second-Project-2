@@ -1,5 +1,8 @@
 
 /* Optional: Add some basic styling for the homepage */
+body{
+    background-color: gold;
+}
 .welcome-section {
   text-align: center;
   padding: 40px 20px;
