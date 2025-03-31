@@ -1,0 +1,39 @@
+<%- include('../partials/header') %>
+<body>
+   
+
+<h1>Edit Customer: <%= customer.name %></h1>
+
+<%# Display error messages if they exist %>
+<% if (typeof errorMsg !== 'undefined') { %>
+  <p style="color: red;"><%= errorMsg %></p>
+<% } %>
+
+<form action="/customers/<%= customer._id %>?_method=PUT" method="POST">
+  <div>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="<%= customer.name %>" required>
+  </div>
+  <div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="<%= customer.email %>" required>
+  </div>
+  <div>
+    <label for="phone">Phone:</label>
+    <input type="tel" id="phone" name="phone" value="<%= customer.phone || '' %>">
+  </div>
+  <div>
+    <label for="address">Address:</label>
+    <textarea id="address" name="address"><%= customer.address || '' %></textarea>
+  </div>
+  <button type="submit">Update Customer</button>
+</form>
+
+<a href="/customers/<%= customer._id %>">Cancel</a> |
+<a href="/customers">Back to Customers List</a>
+
+
+<%- include('../partials/footer') %>
+    
+</body>
+</html>

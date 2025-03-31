@@ -1,0 +1,35 @@
+<!-- views/fruits/show.ejs -->
+
+<%- include('../partials/header') %>
+
+
+<body>
+ <h1>Customer Details</h1>
+
+  <p><strong>Name:</strong> <%= customer.name %></p>
+  <p><strong>Email:</strong> <%= customer.email %></p>
+  <h2>Owned Pets</h2>
+  <% if (customer.pets && customer.pets.length > 0) { %>
+    <ul>
+      <% customer.pets.forEach(pet => { %>
+        <li>
+          <a href="/pets/<%= pet._id %>"><%= pet.name %></a> (<%= pet.species %>)
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>This customer owns no pets.</p>
+  <% } %>
+  
+  <hr>
+  
+  <a href="/customers/<%= customer._id %>/edit">Edit Customer</a>
+  
+  <form action="/customers/<%= customer._id %>?_method=DELETE" method="POST" style="display: inline;">
+    <button type="submit">Delete Customer</button>
+  </form>
+  
+  <%- include('../partials/footer') %>
+
+</body>
+</html>

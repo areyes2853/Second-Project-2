@@ -1,0 +1,46 @@
+<!-- views/fruits/index.ejs -->
+
+  < <%- include('../partials/header') %>!-- views/fruits/index.ejs -->
+
+<body>
+ 
+
+  <h1>Inventory Items</h1>
+  <a href="/inventory/new">Add New Item</a>
+  
+  <% if (items && items.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Item Name</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% items.forEach(item => { %>
+          <tr>
+            <td><a href="/inventory/<%= item._id %>"><%= item.itemName %></a></td>
+            <td><%= item.category %></td>
+            <td>$<%= item.price.toFixed(2) %></td>
+            <td><%= item.quantityInStock %></td>
+            <td>
+              <a href="/inventory/<%= item._id %>/edit">Edit</a>
+              <form action="/inventory/<%= item._id %>?_method=DELETE" method="POST" style="display: inline;">
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p>No inventory items found.</p>
+  <% } %>
+  
+  <%- include('../partials/footer') %>
+  
+  
+</html>

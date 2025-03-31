@@ -1,0 +1,50 @@
+<%- include('../partials/header') %>
+<body>
+ 
+
+<h1>Edit Inventory Item: <%= item.itemName %></h1>
+
+<%# Display error messages if they exist %>
+<% if (typeof errorMsg !== 'undefined') { %>
+  <p style="color: red;"><%= errorMsg %></p>
+<% } %>
+
+<form action="/inventory/<%= item._id %>?_method=PUT" method="POST">
+  <div>
+    <label for="itemName">Item Name:</label>
+    <input type="text" id="itemName" name="itemName" value="<%= item.itemName %>" required>
+  </div>
+  <div>
+    <label for="description">Description:</label>
+    <textarea id="description" name="description"><%= item.description || '' %></textarea>
+  </div>
+   <div>
+    <label for="category">Category:</label>
+     <select id="category" name="category" required>
+        <option value="">-- Select Category --</option>
+        <% const categories = ['Food', 'Toy', 'Accessory', 'Habitat', 'Medicine']; %>
+        <% categories.forEach(cat => { %>
+            <option value="<%= cat %>" <% if (item.category === cat) { %>selected<% } %>>
+                <%= cat %>
+            </option>
+        <% }); %>
+    </select>
+   </div>
+  <div>
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" step="0.01" min="0" value="<%= item.price %>" required>
+  </div>
+  <div>
+    <label for="quantityInStock">Quantity in Stock:</label>
+    <input type="number" id="quantityInStock" name="quantityInStock" min="0" value="<%= item.quantityInStock %>" required>
+  </div>
+  <button type="submit">Update Item</button>
+</form>
+
+<a href="/inventory/<%= item._id %>">Cancel</a> |
+<a href="/inventory">Back to Inventory List</a>
+
+<%- include('../partials/footer') %>
+    
+</body>
+</html>

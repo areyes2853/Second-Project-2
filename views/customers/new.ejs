@@ -1,0 +1,41 @@
+<!-- views/fruits/new.ejs -->
+
+<%- include('../partials/header') %>
+  <body>
+   
+
+<h1>Add New Customer</h1>
+
+<%# Display error messages if they exist %>
+<% if (typeof errorMsg !== 'undefined') { %>
+  <p style="color: red;"><%= errorMsg %></p>
+<% } %>
+
+<form action="/customers" method="POST">
+  <div>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required <%# Pre-fill if form failed validation %>
+           value="<%= (typeof formData !== 'undefined' && formData.name) ? formData.name : '' %>">
+  </div>
+  <div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required
+           value="<%= (typeof formData !== 'undefined' && formData.email) ? formData.email : '' %>">
+  </div>
+  <div>
+    <label for="phone">Phone:</label>
+    <input type="tel" id="phone" name="phone"
+           value="<%= (typeof formData !== 'undefined' && formData.phone) ? formData.phone : '' %>">
+  </div>
+    <div>
+    <label for="address">Address:</label>
+    <textarea id="address" name="address"><%= (typeof formData !== 'undefined' && formData.address) ? formData.address : '' %></textarea>
+  </div>
+  <button type="submit">Create Customer</button>
+</form>
+
+<a href="/customers">Cancel</a>
+
+<%- include('../partials/footer') %>
+  </body>
+</html>

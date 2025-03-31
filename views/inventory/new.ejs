@@ -1,0 +1,52 @@
+<%- include('../partials/header') %>
+  <body>
+ 
+
+<h1>Add New Inventory Item</h1>
+
+<%# Display error messages if they exist %>
+<% if (typeof errorMsg !== 'undefined') { %>
+  <p style="color: red;"><%= errorMsg %></p>
+<% } %>
+
+<form action="/inventory" method="POST">
+  <div>
+    <label for="itemName">Item Name:</label>
+    <input type="text" id="itemName" name="itemName" required
+           value="<%= (typeof formData !== 'undefined' && formData.itemName) ? formData.itemName : '' %>">
+  </div>
+  <div>
+    <label for="description">Description:</label>
+    <textarea id="description" name="description"><%= (typeof formData !== 'undefined' && formData.description) ? formData.description : '' %></textarea>
+  </div>
+   <div>
+    <label for="category">Category:</label>
+    <select id="category" name="category" required>
+        <option value="">-- Select Category --</option>
+        <% const categories = ['Food', 'Toy', 'Accessory', 'Habitat', 'Medicine']; %>
+        <% categories.forEach(cat => { %>
+            <option value="<%= cat %>"
+                <% if (typeof formData !== 'undefined' && formData.category === cat) { %>selected<% } %>>
+                <%= cat %>
+            </option>
+        <% }); %>
+    </select>
+   </div>
+  <div>
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" step="0.01" min="0" required
+           value="<%= (typeof formData !== 'undefined' && formData.price) ? formData.price : '' %>">
+  </div>
+  <div>
+    <label for="quantityInStock">Quantity in Stock:</label>
+    <input type="number" id="quantityInStock" name="quantityInStock" min="0" required
+           value="<%= (typeof formData !== 'undefined' && formData.quantityInStock) ? formData.quantityInStock : '0' %>">
+  </div>
+  <button type="submit">Create Item</button>
+</form>
+
+<a href="/inventory">Cancel</a>
+
+<%- include('../partials/footer') %>
+  </body>
+</html>
