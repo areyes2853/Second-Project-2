@@ -1,26 +1,32 @@
 <!-- views/fruits/index.ejs -->
-
 <%- include('../partials/header.ejs') %>
-  <!-- views/fruits/index.ejs -->
-
 <body>
-    <h1>Pet Store</h1>
+  <h1>All Pets</h1>
+  <a href="/pets/new">Add New Pet</a>
+
+  <% if (pets && pets.length > 0) { %>
     <ul>
       <% pets.forEach(pet => { %>
-        <li><a href="/pets/<%= pet._id %>"><%= pet.name %> - <%= pet.type %> - <%= pet.price %> USD</a></li>
+        <li>
+          <a href="/pets/<%= pet._id %>">
+            <strong><%= pet.name %></strong>
+          </a>
+          (<%= pet.type %>)
+
+          <% if (pet.customer && pet.customer.name) { %>
+             - Owned by: <%= pet.customer.name %>
+          <% } else { %>
+             - (No Owner Assigned)
+          <% } %>
+
+          <%# Add links to edit/delete later inside the li if desired %>
+        </li>
       <% }) %>
     </ul>
-    <form action="/pets/create" method="POST">
-      <h3>Add a new Pet</h3>
-      <input type="text" name="name" placeholder="Pet Name" required>
-      <input type="text" name="breed" placeholder="Breed" required>
-      <input type="number" name="age" placeholder="Age" required>
-      <input type="text" name="type" placeholder="Type (e.g. Dog)" required>
-      <input type="number" name="price" placeholder="Price" required>
-      <input type="text" name="customerId" placeholder="Customer ID" required>
-      <button type="submit">Add Pet</button>
-    </form>
-    
-  
-    <%- include('../partials/footer.ejs') %>
+  <% } else { %>
+    <p>No pets found.</p>
+  <% } %>
+
+  <%- include('../partials/footer.ejs') %>
+</body>
 </html>

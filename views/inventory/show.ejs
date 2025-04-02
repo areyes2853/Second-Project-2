@@ -1,31 +1,31 @@
-<!-- views/fruits/show.ejs -->
+<%- include('../partials/header.ejs') %>
 
- <%- include('../partials/header') %> <h1>Customer Details</h1>
+<body>
+  <h1>Inventory Item Details</h1>
 
- <body>
-  <p><strong>Name:</strong> <%= customer.name %></p>
-  <p><strong>Email:</strong> <%= customer.email %></p>
-  <h2>Owned Pets</h2>
-  <% if (customer.pets && customer.pets.length > 0) { %>
-    <ul>
-      <% customer.pets.forEach(pet => { %>
-        <li>
-          <a href="/pets/<%= pet._id %>"><%= pet.name %></a> (<%= pet.species %>)
-        </li>
-      <% }) %>
-    </ul>
+  <% if (typeof item === 'undefined' || !item) { %>
+     <p>Inventory item not found.</p>
+     <a href="/inventory">Back to Inventory List</a>
   <% } else { %>
-    <p>This customer owns no pets.</p>
+    <div><strong>Item Name:</strong> <%= item.itemName %></div>
+    <div><strong>Category:</strong> <%= item.category %></div>
+    <div><strong>Description:</strong> <%= item.description ? item.description : 'N/A' %></div>
+    <div><strong>Price:</strong> <%= typeof item.price !== 'undefined' ? `$${item.price.toFixed(2)}` : 'N/A' %></div>
+    <div><strong>Quantity in Stock:</strong> <%= typeof item.quantityInStock !== 'undefined' ? item.quantityInStock : 'N/A' %></div>
+
+    <hr>
+
+    <h2>Actions</h2>
+    <a href="/inventory/<%= item._id %>/edit">Edit Item</a> |
+
+    <%# Delete button requires a form + method-override %>
+    <form action="/inventory/<%= item._id %>?_method=DELETE" method="POST" style="display: inline;">
+        <button type="submit" onclick="return confirm('Are you sure you want to delete <%= item.itemName %>?');">Delete Item</button>
+    </form> |
+
+    <a href="/inventory">Back to Inventory List</a>
   <% } %>
-  
-  <hr>
-  
-  <a href="/customers/<%= customer._id %>/edit">Edit Customer</a>
-  
-  <form action="/customers/<%= customer._id %>?_method=DELETE" method="POST" style="display: inline;">
-    <button type="submit">Delete Customer</button>
-  </form>
-  
-  <%- include('../partials/footer') %>
+
+  <%- include('../partials/footer.ejs') %>
 </body>
 </html>

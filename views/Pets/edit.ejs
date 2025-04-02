@@ -1,6 +1,5 @@
 <%- include('../partials/header.ejs') %>
 <body>
- 
 
 <h1>Edit Pet: <%= pet.name %></h1>
 
@@ -9,35 +8,56 @@
   <p style="color: red;"><%= errorMsg %></p>
 <% } %>
 
+<%# Form submits a PUT request via method-override %>
 <form action="/pets/<%= pet._id %>?_method=PUT" method="POST">
+
   <div>
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" value="<%= pet.name %>" required>
   </div>
+
   <div>
-    <label for="species">Species:</label>
-    <input type="text" id="species" name="species" value="<%= pet.species %>" required>
+    <label for="type">Type:</label> <select id="type" name="type" required>
+      <option value="">-- Select Type --</option>
+      <% const types = ['Dog', 'Cat', 'Bird', 'Reptile']; %>
+      <% types.forEach(petType => { %>
+        <option value="<%= petType %>"
+          <%# Select the CURRENT type of the pet %>
+          <% if (pet.type === petType) { %>selected<% } %>>
+          <%= petType %>
+        </option>
+      <% }) %>
+    </select>
   </div>
+
   <div>
     <label for="breed">Breed:</label>
     <input type="text" id="breed" name="breed" value="<%= pet.breed || '' %>">
   </div>
+
   <div>
     <label for="age">Age:</label>
-    <input type="number" id="age" name="age" value="<%= pet.age || '' %>">
+    <input type="number" id="age" name="age" min="0" value="<%= pet.age || '' %>">
   </div>
+
   <div>
-    <label for="ownerId">Owner:</label>
-    <select id="ownerId" name="ownerId" required>
-       <option value="">-- Select Owner --</option>
-      <% if (customers && customers.length > 0) { %>
-        <% customers.forEach(customer => { %>
-          <option value="<%= customer._id %>"
-            <%# Select the CURRENT owner %>
-            <% if (pet.owner && pet.owner.toString() === customer._id.toString()) { %>selected<% } %>>
-            <%= customer.name %> (<%= customer.email %>)
+    <label for="price">Price:</label> <input type="number" id="price" name="price" min="0" step="0.01" value="<%= typeof pet.price !== 'undefined' ? pet.price : '' %>">
+  </div>
+
+  <div>
+    <label for="customer">Owner:</label> <select id="customer" name="customer" required>
+      <option value="">-- Select Owner --</option>
+      <%# Check if the customers array was passed from the route %>
+      <% if (typeof customers !== 'undefined' && customers.length > 0) { %>
+        <% customers.forEach(c => { %>
+          <option value="<%= c._id %>"
+            <%# Select the CURRENT owner - check pet.customer exists before comparing %>
+            <% if (pet.customer && pet.customer.toString() === c._id.toString()) { %>selected<% } %>>
+            <%= c.name %>
           </option>
         <% }) %>
+      <% } else { %>
+         <option value="" disabled>No customers available</option>
       <% } %>
     </select>
   </div>
@@ -45,10 +65,7 @@
   <button type="submit">Update Pet</button>
 </form>
 
-<a href="/pets/<%= pet._id %>">Cancel</a> |
-<a href="/pets">Back to Pets List</a>
+<a href="/pets/<%= pet._id %>">Cancel</a> | <a href="/pets">Back to Pets List</a>   <%- include('../partials/footer.ejs') %>
 
-<%- include('../partials/footer.ejs') %>
-    
 </body>
 </html>

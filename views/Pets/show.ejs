@@ -1,24 +1,45 @@
-<!-- views/fruits/show.ejs -->
 <%- include('../partials/header.ejs') %>
 
-
 <body>
-  <h1>Pet Store</h1>
-<ul>
-  <% pets.forEach(pet => { %>
-    <li><a href="/pets/<%= pet._id %>"><%= pet.name %> - <%= pet.type %> - <%= pet.price %> USD</a></li>
-  <% }) %>
-</ul>
-<form action="/pets/create" method="POST">
-  <h3>Add a new Pet</h3>
-  <input type="text" name="name" placeholder="Pet Name" required>
-  <input type="text" name="breed" placeholder="Breed" required>
-  <input type="number" name="age" placeholder="Age" required>
-  <input type="text" name="type" placeholder="Type (e.g. Dog)" required>
-  <input type="number" name="price" placeholder="Price" required>
-  <input type="text" name="customerId" placeholder="Customer ID" required>
-  <button type="submit">Add Pet</button>
-</form>
-<%- include('../partials/footer.ejs') %>
+  <h1>Pet Details: <%= pet.name %></h1>
+
+  <div><strong>Name:</strong> <%= pet.name %></div>
+  <div><strong>Type:</strong> <%= pet.type %></div>
+  <div><strong>Breed:</strong> <%= pet.breed ? pet.breed : 'N/A' %></div>
+  <div><strong>Age:</strong> <%= typeof pet.age !== 'undefined' ? pet.age : 'N/A' %></div>
+  <div><strong>Price:</strong> <%= typeof pet.price !== 'undefined' ? `$${pet.price.toFixed(2)}` : 'N/A' %></div>
+
+  <hr>
+
+  <h2>Owner Information</h2>
+  <%# Display owner details if the customer field was populated %>
+  <% if (pet.customer) { %>
+    <div><strong>Owner:</strong>
+       <%# Link to the customer's show page (assuming you have one) %>
+       <a href="/customers/<%= pet.customer._id %>"><%= pet.customer.name %></a>
+       <% if (pet.customer.email) { %>(<%= pet.customer.email %>)<% } %>
+    </div>
+  <% } else { %>
+    <div><strong>Owner:</strong> (No Owner Assigned)</div>
+  <% } %>
+
+  <%# You could add a section here later to display pet.inStock details if needed %>
+
+  <hr>
+
+  <h2>Actions</h2>
+  <%# Link to an edit page (you'll need to create this route/view later) %>
+  <a href="/pets/<%= pet._id %>/edit">Edit Pet</a> |
+
+  <%# Delete button requires a form + method-override %>
+  <%# You'll need to create the DELETE /pets/:petId route handler later %>
+  <form action="/pets/<%= pet._id %>?_method=DELETE" method="POST" style="display: inline;">
+      <button type="submit" onclick="return confirm('Are you sure you want to delete <%= pet.name %>?');">Delete Pet</button>
+  </form> |
+
+  <%# Link back to the pets index page %>
+  <a href="/pets">Back to All Pets</a>
+
+  <%- include('../partials/footer.ejs') %>
 </body>
 </html>
